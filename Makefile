@@ -1,5 +1,4 @@
 #===============================================================================
-# Author: Johandry Amador <ja186051@teradata.com>
 # Title:  Presto Container
 #
 # Usage: make [<rule>]
@@ -30,8 +29,8 @@ SHELL				 := /bin/bash
 ## Variables optionally assigned from Environment Variables:
 ## -----------------------------------------------------------------------------
 
-PRESTO_VERSION ?= 0.167-t.0.3
-DOCKER_USER			= johandry
+PRESTO_VERSION ?= 0.250
+DOCKER_USER			= asifkazi
 
 CLI_PORT 			 ?= $(P)
 ifeq ($(CLI_PORT),)
