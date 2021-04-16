@@ -5,3 +5,4 @@ presto-server-*.tar.gz
 */data/*
 
 Makefile_TD
+.DS_Store
