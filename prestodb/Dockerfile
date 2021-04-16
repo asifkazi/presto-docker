@@ -9,12 +9,6 @@ ARG PRESTO_VERSION="0.250"
 ARG PRESTO_BIN="${REPO}/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz"
 ARG PRESTO_CLI_BIN="${REPO}/presto-cli/${PRESTO_VERSION}/presto-cli-${PRESTO_VERSION}-executable.jar"
 
-ARG MYSQL_HOST=mysql
-ARG MYSQL_PORT=3306
-ARG MYSQL_DATABASE=demodb
-ARG MYSQL_USER=dbuser
-ARG MSQL_PASSWORD=dbuser
-
 ##Update OS and Dependencies##
 USER root
  
@@ -26,13 +20,19 @@ RUN apt-get update &&\
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
-##Create presto user and directories##
+#Presto environment variables
 ENV PRESTO_HOME /opt/presto
 ENV PRESTO_USER presto
 ENV PRESTO_CONF_DIR ${PRESTO_HOME}/etc
 ENV PATH $PATH:$PRESTO_HOME/bin
 
+#MySQL environment variables
+ENV MYSQL_HOST=mysql
+ENV MYSQL_PORT=3306
+ENV MYSQL_USER=dbuser
+ENV MYSQL_PASSWORD=dbuser
 
+##Create presto user and directories##
 RUN useradd \
         --create-home \
         --home-dir ${PRESTO_HOME} \

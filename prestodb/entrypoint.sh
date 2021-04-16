@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 # Populate node.id from uuidgen by replacing template with the node uuid
 nodeid() {
   sed -i 's@$(NODE_UUID)@'$(uuidgen)'@g' ${PRESTO_CONF_DIR}/node.properties
@@ -45,7 +45,7 @@ hive_catalog_config() {
 mysql_catalog_config() {
   (
     echo "connector.name=mysql"
-    echo "connection-url=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}"
+    echo "connection-url=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}"
     echo "connection-user=${MYSQL_USER}"
     echo "connection-password=${MYSQL_PASSWORD}"
   ) >${PRESTO_CONF_DIR}/catalog/mysql.properties
@@ -69,6 +69,6 @@ if [[ -z "${COORDINATOR}" ]]; then coordinator_config; else worker_config; fi
 
 # Create a MySQL connector, only if the mysql url, user and password parameters
 # are set.
-[[ -n "${MYSQL_HOST}" && -n "${MYSQL_PORT}" && -n "${MYSQL_DATABASE}" && -n "${MYSQL_USER}" && -n "${MYSQL_PASSWORD}" ]] && mysql_catalog_config
+[[ -n "${MYSQL_HOST}" && -n "${MYSQL_PORT}" && -n "${MYSQL_USER}" && -n "${MYSQL_PASSWORD}" ]] && mysql_catalog_config
 
 exec $@

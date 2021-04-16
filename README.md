@@ -110,7 +110,6 @@ MySQL parameters, if **all of them** are set a MySQL connector will be created:
 
     MYSQL_HOST=mysql-service
     MYSQL_PORT=3306
-    MYSQL_DATABASE=prestodemo
     MYSQL_USER=test
     MYSQL_PASSWORD=test
 

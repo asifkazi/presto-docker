@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 # Use 'run' instead of start to keep Presto running and sending logs to Stdout:
 /etc/init.d/presto run
