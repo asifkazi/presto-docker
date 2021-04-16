@@ -5,24 +5,21 @@ Docker image for Presto Server and Presto CLI.
 ## Supported tags and Dockerfiles
 
 ### Presto Server:
-* [latest](./0.167-t.0.3): [Dockerfile](./0.167-t.0.3/Dockerfile)
-* [0.167-t.0.3](./0.167-t.0.3): [Dockerfile](./0.167-t.0.3/Dockerfile)
+* [latest](./prestodb): [Dockerfile](./prestodb/Dockerfile)
+* [0.250](./prestodb): [Dockerfile](./prestodb/Dockerfile)
 
-### Presto CLI:
-* [latest](./0.167-t.0.3/cli): [Dockerfile](./0.167-t.0.3/cli/Dockerfile)
-* [0.167-t.0.3](./0.167-t.0.3/cli): [Dockerfile](./0.167-t.0.3/cli/Dockerfile)
 
 ## Quick Start
 
-This repository is integrated with Docker Registry at `johandry/presto`, any change in the `master` branch will push a new image to Docker Registry.
+This repository is integrated with Docker Registry at `asifkazi/prestodb`, any change in the `master` branch will push a new image to Docker Registry.
 
 To get the image use the Docker pull command:
 
-    docker pull johandry/presto:0.167-t.0.3
+    docker pull asifkazi/presto:0.250
 
 With a Dockerfile you can use:
 
-    FROM johandry/presto:0.167-t.0.3
+    FROM asifkazi/presto:0.250
 
     COPY catalog/Hive.properties /usr/lib/presto/etc/catalog/
 
@@ -33,26 +30,14 @@ With a Dockerfile you can use:
 
     CMD /etc/init.d/presto run
 
-Then you can build and run a Presto Coordinator with:
+Then you can build and run a Presto Server with:
 
-    docker build -t my_presto .
-    docker run -it --rm --name presto_coordinator -d my_presto /bin/sh --login
+    docker build -t prestodb .
+    docker run -it --rm --name presto-docker -d prestodb /bin/sh --login
 
-To use Presto CLI, first get the image:
+You can either use the presto cli on the docker container, or download the jar from the prestodb website
 
-    docker pull johandry/presto-cli:0.167-t.0.3
-
-It's not common but you may use it in your own image with:
-
-    FROM johandry/presto-cli:latest
-
-To use the Presto CLI, run a container with the presto-cli image and send the presto parameters as commands.
-
-    docker run --name presto-cli --rm -it johandry/presto-cli --server ${coordinator_ip}:8080 --execute ${query}
-
-Or, use no command parameter to execute the Presto CLI
-
-    docker run --name presto-cli --rm -it johandry/presto-cli
+    $ presto
     presto>  show catalogs;
       Catalog
     -----------
@@ -80,15 +65,8 @@ If you which to release/push the new images to a Docker Registry, modify in the 
 
 Optionally, you can pass the Presto Server version to build or release.
 
-    make PRESTO_VERSION=0.167-t.0.3
-    make release PRESTO_VERSION=0.167-t.0.3
-
-Adding `-presto` or `-cli` to the `build` or `release` make rules, will build or release the Presto Server or Presto CLI images. For example:
-
-    make build-presto
-    make release-presto
-    make build-cli
-    make release-cli
+    make PRESTO_VERSION=0.250
+    make release PRESTO_VERSION=0.250
 
 With the `make` you can also:
 * Do it all (build, release and clean): `make all`
@@ -98,7 +76,6 @@ With the `make` you can also:
 * Remove container(s) and the image: `make clean-all`
 * List all the containers and images: `make ls`
 * Open the Presto Dashboar (only Mac OSX): `make presto-dashboard`
-* Open Presto CLI: `make cli`
 * Execute queries: `make query H=coordinator Q='show catalogs;'`, `make query-catalogs H=coordinator`, `make query-workers H=coordinator`
 * And, you can list all the options and description with: `make help`
 
@@ -140,10 +117,9 @@ MySQL parameters, if **all of them** are set a MySQL connector will be created:
 ## What's in the image?
 
 The image contain:
-* Alpine 3.5 (from base image `openjdk:alpine`)
-* OpenJDK 8u121 (`openjdk:alpine`)
-* Python2
-* Presto 0.167-t.0.3
+* Latest OpenJDK 8 (`openjdk:8`)
+* Python3
+* Presto 0.250
 
 The entrypoint will:
 * Configure Presto:
@@ -153,15 +129,4 @@ The entrypoint will:
 * Create a Hive Metastore if the `HIVE_METASTORE_*` environment variables are set
 
 ## TODO
-
-- [X] Create an image based on Java 8 OpenJDK with Alpine 3.5 (Java is a dependency for Presto Server)
-- [X] Make the image packed with Python 2.7 (Python >2.4 is required by Presto Server)
-- [X] Install Presto Server using the tar.gz file (The rpm require Java 8 Oracle)
-- [X] Setup Presto Server as a single node in the container
-- [X] Add the following catalogs/connectors to the image: BlackHole, JMX & TPCH
-- [X] The entrypoint script configure the container as a coordinator or worker, based on environment variables
-- [X] Create a Makefile to automate all the tasks
-- [X] Create a docker-compose file to create a cluster for testing.
-- [X] Fix Connection refused when trying to connect from a worker to coordinator.
-- [ ] Define if create a new image to be the base of presto image. This image will have Java and Python.
 - [ ] Integrate with Kubernetes
