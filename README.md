@@ -108,11 +108,14 @@ HIVE metastore parameters, if **all of them** are set a Hive metastore connector
 
 MySQL parameters, if **all of them** are set a MySQL connector will be created:
 
-    MYSQL_HOST=mysql-service
+    MYSQL_HOST=mysql
     MYSQL_PORT=3306
-    MYSQL_USER=test
-    MYSQL_PASSWORD=test
+    MYSQL_USER=dbuser
+    MYSQL_PASSWORD=dbuser
 
+You can start your own docker instance for MYSQL 5.7 using the following command:
+    docker run --name mysql -e MYSQL_ROOT_PASSWORD='P@ssw0rd$$' -e MYSQL_DATABASE=demodb -e MYSQL_USER=dbuser -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbuser -p 3306:3306 -p 33060:33060 -d mysql:5.7
+    
 ## What's in the image?
 
 The image contain:
