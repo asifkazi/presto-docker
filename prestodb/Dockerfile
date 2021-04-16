@@ -9,6 +9,12 @@ ARG PRESTO_VERSION="0.250"
 ARG PRESTO_BIN="${REPO}/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz"
 ARG PRESTO_CLI_BIN="${REPO}/presto-cli/${PRESTO_VERSION}/presto-cli-${PRESTO_VERSION}-executable.jar"
 
+ARG MYSQL_HOST=mysql
+ARG MYSQL_PORT=3306
+ARG MYSQL_DATABASE=mysql-presto
+ARG MYSQL_USER=dbuser
+ARG MSQL_PASSWORD=dbuser
+
 ##Update OS and Dependencies##
 USER root
  

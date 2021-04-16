@@ -1,5 +1,4 @@
 #===============================================================================
-# Author: Johandry Amador <ja186051@teradata.com>
 # Title:  Presto Container
 #
 # Usage: make [<rule>]
@@ -16,9 +15,9 @@
 # Description: This Makefile is to create a Presto container and use it with
 # Docker-compose or Kubernetes.
 # Use 'make help' to view all the options or go to
-# https://github.td.teradata.com/ja186051/presto-docker
+# https://github.com/asifkazi/presto-docker
 #
-# Report Issues or create Pull Requests in https://github.td.teradata.com/ja186051/presto-docker
+# Report Issues or create Pull Requests in https://github.com/asifkazi/presto-docker
 #===============================================================================
 
 ## Variables (Modify their values if needed):
@@ -31,20 +30,6 @@ SHELL				 := /bin/bash
 ## -----------------------------------------------------------------------------
 
 PRESTO_VERSION 	?= $(shell grep ^PRESTO_VERSION ../Makefile | cut -f2 -d= | tr -d ' ')
-DOCKER_CLI_NAME ?= $(shell grep ^DOCKER_CLI_NAME ../Makefile | cut -f2 -d= | tr -d ' ')
-
-CLI_HOST 			 ?= $(H)
-ifeq ($(CLI_HOST),)
-CLI_HOST 			 := coordinator
-endif
-
-CLI_PORT 			 ?= $(P)
-ifeq ($(CLI_PORT),)
-CLI_PORT 			 := 8080
-endif
-
-
-DOCKER_RUN_CLI := docker-compose run --name $(DOCKER_CLI_NAME) --rm cli --server $(CLI_HOST):$(CLI_PORT)
 
 # Constants (You would not want to modify them):
 ## -----------------------------------------------------------------------------
@@ -112,23 +97,3 @@ version:
 presto-dashboard:
 	open "http://localhost:"`docker port coordinator 8080/tcp | cut -f2 -d:`
 
-# open a console to the Presto CLI. Require the hostname or IP address of the
-# Presto Coordinator with parameter 'H'. Optionaly can provide the Presto server
-# Port with parameter 'P'
-cli:
-	$(DOCKER_RUN_CLI)
-
-# execute a query with the Presto CLI. Require the query in the parameter 'Q'
-# and the hostname or IP address of the Presto Coordinator with parameter 'H'.
-# Optionaly can provide the Presto server Port with parameter 'P'.
-query:
-	@if [[ -z "$(Q)" ]]; then echo "$(C_GREEN)Required a query in 'Q'$(C_STD). Example: make query Q='show catalogs;'" && exit 1; fi
-	@$(DOCKER_RUN_CLI) --execute '$(Q)'
-
-# query to Presto CLI the existing catalogs
-query-catalogs:
-	@$(MAKE) query H=$(CLI_HOST) P=$(CLI_PORT) Q='show catalogs;'
-
-# query to Presto CLI the existing Presto Workers
-query-workers:
-	@$(MAKE) query H=$(CLI_HOST) P=$(CLI_PORT) Q='select * from system.runtime.nodes;'

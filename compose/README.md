@@ -22,16 +22,6 @@ To view the Presto UI get the Presto Dashboard port with `docker port coordinato
 
     make presto-dashboard
 
-To use the Presto CLI, execute:
-
-    make cli
-
-Or, you can execute Presto CLI queries like this:
-
-    make query Q='show catalogs;'
-    make query-catalogs
-    make query-workers
-
 And, to destroy the cluster:
 
     docker-compose down
