@@ -45,7 +45,7 @@ hive_catalog_config() {
 mysql_catalog_config() {
   (
     echo "connector.name=mysql"
-    echo "connection-url=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}"
+    echo "connection-url=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}?useSSL=false"
     echo "connection-user=${MYSQL_USER}"
     echo "connection-password=${MYSQL_PASSWORD}"
   ) >${PRESTO_CONF_DIR}/catalog/mysql.properties
