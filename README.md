@@ -75,7 +75,7 @@ With the `make` you can also:
 * Remove any container creted with that image: `make clean`
 * Remove container(s) and the image: `make clean-all`
 * List all the containers and images: `make ls`
-* Open the Presto Dashboar (only Mac OSX): `make presto-dashboard`
+* Open the Presto Dashboard (only Mac OSX): `make presto-dashboard`
 * Execute queries: `make query H=coordinator Q='show catalogs;'`, `make query-catalogs H=coordinator`, `make query-workers H=coordinator`
 * And, you can list all the options and description with: `make help`
 
